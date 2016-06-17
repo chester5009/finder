@@ -2,7 +2,8 @@
 
 # Form implementation generated from reading ui file 'form.ui'
 #
-# Created by: PyQt4 UI code generator 4.11.4
+# Created: Fri Jun 17 14:52:06 2016
+#      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -25,7 +26,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(350, 550)
+        Form.resize(350, 707)
         Form.setMinimumSize(QtCore.QSize(350, 550))
         Form.setMaximumSize(QtCore.QSize(350, 99999))
         self.newButton = QtGui.QPushButton(Form)
@@ -42,18 +43,36 @@ class Ui_Form(object):
         self.zvotklButton.setText(_fromUtf8(""))
         self.zvotklButton.setObjectName(_fromUtf8("zvotklButton"))
         self.stackedWidget = QtGui.QStackedWidget(Form)
-        self.stackedWidget.setGeometry(QtCore.QRect(20, 80, 311, 431))
+        self.stackedWidget.setGeometry(QtCore.QRect(10, 80, 321, 601))
         self.stackedWidget.setObjectName(_fromUtf8("stackedWidget"))
         self.page = QtGui.QWidget()
         self.page.setObjectName(_fromUtf8("page"))
-        self.scrollArea = QtGui.QScrollArea(self.page)
-        self.scrollArea.setGeometry(QtCore.QRect(10, 20, 291, 331))
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
-        self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 289, 329))
-        self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.lineEdit = QtGui.QLineEdit(self.page)
+        self.lineEdit.setGeometry(QtCore.QRect(90, 360, 171, 27))
+        self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
+        self.lineEdit_2 = QtGui.QLineEdit(self.page)
+        self.lineEdit_2.setGeometry(QtCore.QRect(90, 400, 141, 27))
+        self.lineEdit_2.setObjectName(_fromUtf8("lineEdit_2"))
+        self.lineEdit_3 = QtGui.QLineEdit(self.page)
+        self.lineEdit_3.setGeometry(QtCore.QRect(90, 440, 41, 27))
+        self.lineEdit_3.setObjectName(_fromUtf8("lineEdit_3"))
+        self.label = QtGui.QLabel(self.page)
+        self.label.setGeometry(QtCore.QRect(20, 360, 66, 17))
+        self.label.setObjectName(_fromUtf8("label"))
+        self.label_2 = QtGui.QLabel(self.page)
+        self.label_2.setGeometry(QtCore.QRect(20, 400, 66, 17))
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.label_3 = QtGui.QLabel(self.page)
+        self.label_3.setGeometry(QtCore.QRect(20, 440, 66, 17))
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.tableWidget = QtGui.QTableWidget(self.page)
+        self.tableWidget.setGeometry(QtCore.QRect(10, 10, 301, 341))
+        self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
+        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setRowCount(0)
+        self.saveButton = QtGui.QPushButton(self.page)
+        self.saveButton.setGeometry(QtCore.QRect(20, 490, 281, 27))
+        self.saveButton.setObjectName(_fromUtf8("saveButton"))
         self.stackedWidget.addWidget(self.page)
         self.page_2 = QtGui.QWidget()
         self.page_2.setObjectName(_fromUtf8("page_2"))
@@ -65,4 +84,8 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Finder", None))
+        self.label.setText(_translate("Form", "Ссылка", None))
+        self.label_2.setText(_translate("Form", "Фраза", None))
+        self.label_3.setText(_translate("Form", "Интервал(с)", None))
+        self.saveButton.setText(_translate("Form", "Сохранить", None))
 

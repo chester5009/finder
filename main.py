@@ -7,7 +7,7 @@ from PyQt4 import QtCore,QtGui
 from PyQt4.Qt import QApplication, QDialog
 from controller import controller
 
-'''
+
 sait=urllib.urlopen("http://www.porn.com/videos/blonde-with-huge-tits-fucks-a-man-with-huge-muscles-2506969")
 
 whatfound="Best movie ever"
@@ -18,7 +18,7 @@ print data
 print data.find(whatfound)
 f.write(data)
 f.close()
-'''
+
 
 def main():
     app = QApplication(sys.argv)
