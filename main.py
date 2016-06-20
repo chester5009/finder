@@ -8,9 +8,9 @@ from PyQt4.Qt import QApplication, QDialog
 from controller import controller
 
 
-sait=urllib.urlopen("http://www.porn.com/videos/blonde-with-huge-tits-fucks-a-man-with-huge-muscles-2506969")
+sait=urllib.urlopen("https://www.yandex.ru/")
 
-whatfound="Best movie ever"
+whatfound="Метро"
 
 f=open("index.html",'w')
 data=sait.read()

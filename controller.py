@@ -1,12 +1,18 @@
+# -*- coding: utf-8 -*-
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QIcon
 from PyQt4.Qt import QSize, QTableWidgetItem, QColor, QPixmap, QLabel
 from finder import Finder
+from entity import Entity
+
+
 class controller:
     
     def __init__(self, ui, window):
         self.ui = ui
         self.window = window
+        self.entityes=[]
+        self.selectedEntity=-1
         self.loadImages()
         self.setIcons()
         self.setEvents()
@@ -39,8 +45,24 @@ class controller:
         self.picSetting = QtGui.QPixmap("assets/setting.png")
         pass
     
+    def updateEntyties(self):
+        for i in self.entityes:
+            i.set_is_found(i.isFound())
+        pass
+    
+    def updateTable(self,tab):
+        tab.clear()
+        tab.setRowCount(0)
+        for i in self.entityes:
+            self.addToTable(i.get_is_found(), i.get_phrase(), tab)
+        pass
+    
     def newButtonClick(self):
-        self.addToTable(True, "gg", self.ui.tableWidget)
+        oneElem=Entity("https://www.yandex.ru/","Метро",-1)
+        self.entityes.append(oneElem)
+        #self.addToTable(False, "", self.ui.tableWidget)
+        self.updateEntyties()
+        self.updateTable(self.ui.tableWidget)
         print "new"
         pass
     
@@ -53,7 +75,7 @@ class controller:
         pass
     def saveButtonClick(self):
         # self.addToTable(True, "gg", self.ui.tableWidget)
-        finder = Finder()
+        '''finder = Finder()
         url = self.ui.lineEdit.text()
         phrase = self.ui.lineEdit_2.text()
         interval = self.ui.lineEdit_3.text()
@@ -62,14 +84,50 @@ class controller:
         finder.set_phrase(phrase)
         finder.set_interval(interval)
         
-        self.addToTable(finder.isFound(), finder.get_phrase(), self.ui.tableWidget)
+        self.addToTable(finder.isFound(), finder.get_phrase(), self.ui.tableWidget)'''
+        self.changeEntity(self.selectedEntity)
+        self.selectedEntity=-1
         print "save"
         pass
+    
+    def deleteEntity(self,i):
+        del self.entityes[i]
+        pass
+    
+    def showEntity(self,i):
+        self.ui.lineEdit.setText(i.get_url())
+        self.ui.lineEdit_2.setText(i.get_phrase().decode("utf8"))
+        self.ui.lineEdit_3.setText(str(i.get_interval()))
+        
+        pass
+    def changeEntity(self,i):
+        if(i!=-1):
+            url=self.ui.lineEdit.text()
+            phrase=self.ui.lineEdit_2.text()
+            interval=int(self.ui.lineEdit_3.text())
+            
+            self.entityes[i].set_url(url)
+            self.entityes[i].set_phrase(phrase)
+            self.entityes[i].set_interval(interval)
+            
+        pass
+    
+    def clickTable(self,i,j):
+        print str(i)+" "+str(j)
+        if j == 0:
+            self.deleteEntity(i)
+            self.updateTable(self.ui.tableWidget)
+        elif j==2:
+            self.showEntity(self.entityes[i])
+            self.selectedEntity=i
+        pass
+    
     def setEvents(self):
         self.ui.newButton.clicked.connect(self.newButtonClick)
         self.ui.zvvklButton.clicked.connect(self.zvvklButtonClick)
         self.ui.zvotklButton.clicked.connect(self.zvotklButtonClick)
         self.ui.saveButton.clicked.connect(self.saveButtonClick)
+        self.ui.tableWidget.cellClicked.connect(self.clickTable)
         pass
     
     def setTable(self):

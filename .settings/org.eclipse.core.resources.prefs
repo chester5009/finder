@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
+encoding/controller.py=utf-8
+encoding/entity.py=utf-8
 encoding/finder.py=utf-8
 encoding/form.py=utf-8
 encoding/main.py=utf-8
