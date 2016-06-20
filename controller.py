@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QIcon
-from PyQt4.Qt import QSize, QTableWidgetItem, QColor, QPixmap, QLabel
+from PyQt4.Qt import QSize, QTableWidgetItem, QColor, QPixmap, QLabel, QSound,\
+    QString
 from finder import Finder
 from entity import Entity
+import time
+import re
+# from mycclock import ClockThread
+import threading
+import os
+
 
 
 class controller:
@@ -11,14 +18,35 @@ class controller:
     def __init__(self, ui, window):
         self.ui = ui
         self.window = window
-        self.entityes=[]
-        self.selectedEntity=-1
+        self.entityes = []
+        self.selectedEntity = -1
         self.loadImages()
         self.setIcons()
         self.setEvents()
         self.setTable()
+        self.startTime = self.getTime()
+        self.elapsTime = None
+        self.set_elaps_time(self.getTime() - self.startTime)
+        # self.t = threading.Thread(target=self.clockTick, args=(1,self.ui.tableWidget))
+        # self.t.daemon = True
+        # self.t.start()
+
+        snd="aplay "+"assets/good.wav"
+        os.system(snd)
         
+        
+        self.t = QtCore.QTimer()
+        self.t.timeout.connect(self.clockTick)
+        self.t.start(1000)
         pass
+
+    def get_elaps_time(self):
+        return self.__elapsTime
+
+
+    def set_elaps_time(self, value):
+        self.__elapsTime = value
+
     
     def setIcons(self):
         button1 = self.ui.newButton
@@ -47,23 +75,40 @@ class controller:
     
     def updateEntyties(self):
         for i in self.entityes:
-            i.set_is_found(i.isFound())
+            i.set_time(i.get_time() + 1)
+            print "Time " + str(i.get_time()) + " Interval " + str(i.get_interval())
+            if i.get_time() > i.get_interval() and i.get_interval() > -1:
+                i.set_is_found(i.isFound())
+                i.set_time(0)
         pass
     
-    def updateTable(self,tab):
+    def updateTable(self, tab):
         tab.clear()
         tab.setRowCount(0)
         for i in self.entityes:
-            self.addToTable(i.get_is_found(), i.get_phrase(), tab)
+            
+            self.addToTable(i.get_is_found(), i.get_header(), tab)
+            print "Header !! " + i.get_header()
+        pass
+    
+    def clockTick(self):
+        self.updateEntyties()
+        self.updateTable(self.ui.tableWidget)
+        print "Updated"
+        # time.sleep(interval)
         pass
     
     def newButtonClick(self):
-        oneElem=Entity("https://www.yandex.ru/","Метро",-1)
+        oneElem = Entity("", "", -1)
         self.entityes.append(oneElem)
-        #self.addToTable(False, "", self.ui.tableWidget)
+        # self.addToTable(False, "", self.ui.tableWidget)
         self.updateEntyties()
         self.updateTable(self.ui.tableWidget)
         print "new"
+        self.set_elaps_time(self.getTime() - self.startTime)
+        print self.get_elaps_time()
+        
+        
         pass
     
     def zvvklButtonClick(self):
@@ -86,25 +131,25 @@ class controller:
         
         self.addToTable(finder.isFound(), finder.get_phrase(), self.ui.tableWidget)'''
         self.changeEntity(self.selectedEntity)
-        self.selectedEntity=-1
+        self.selectedEntity = -1
         print "save"
         pass
     
-    def deleteEntity(self,i):
+    def deleteEntity(self, i):
         del self.entityes[i]
         pass
     
-    def showEntity(self,i):
+    def showEntity(self, i):
         self.ui.lineEdit.setText(i.get_url())
         self.ui.lineEdit_2.setText(i.get_phrase().decode("utf8"))
         self.ui.lineEdit_3.setText(str(i.get_interval()))
         
         pass
-    def changeEntity(self,i):
-        if(i!=-1):
-            url=self.ui.lineEdit.text()
-            phrase=self.ui.lineEdit_2.text()
-            interval=int(self.ui.lineEdit_3.text())
+    def changeEntity(self, i):
+        if(i != -1):
+            url = str(self.ui.lineEdit.text()).encode("utf-8")
+            phrase = str(self.ui.lineEdit_2.text())
+            interval = int(self.ui.lineEdit_3.text())
             
             self.entityes[i].set_url(url)
             self.entityes[i].set_phrase(phrase)
@@ -112,14 +157,14 @@ class controller:
             
         pass
     
-    def clickTable(self,i,j):
-        print str(i)+" "+str(j)
+    def clickTable(self, i, j):
+        print str(i) + " " + str(j)
         if j == 0:
             self.deleteEntity(i)
             self.updateTable(self.ui.tableWidget)
-        elif j==2:
+        elif j == 2:
             self.showEntity(self.entityes[i])
-            self.selectedEntity=i
+            self.selectedEntity = i
         pass
     
     def setEvents(self):
@@ -146,7 +191,8 @@ class controller:
         lb.setPixmap(self.picClose)
         
         lb2 = QLabel()
-        lb2.setAlignment(QtCore.Qt.AlignCenter)
+        # lb2.setAlignment(QtCore.Qt.AlignCenter)
+       
         lb2.setText(header)
         
         lb3 = QLabel()
@@ -174,4 +220,9 @@ class controller:
         tab.setRowHeight(tab.rowCount() - 1, 70)
         pass
     
-    pass
+    def getTime(self):
+        t = time.time()
+        return t
+    
+    
+    elapsTime = property(get_elaps_time, set_elaps_time, None, None)

@@ -28,6 +28,7 @@ def main():
     
     control=controller(ui,window)
     window.show()
+    
     sys.exit(app.exec_())
     pass
 
