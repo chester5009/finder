@@ -14,6 +14,7 @@ class Entity:
         self.set_is_found(False)
         self.__time=0
         self.set_time(0)
+        self.isRing=False
         
 
     def get_header(self):

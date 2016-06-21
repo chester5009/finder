@@ -10,6 +10,8 @@ import re
 # from mycclock import ClockThread
 import threading
 import os
+from pygame import mixer
+
 
 
 
@@ -30,9 +32,9 @@ class controller:
         # self.t = threading.Thread(target=self.clockTick, args=(1,self.ui.tableWidget))
         # self.t.daemon = True
         # self.t.start()
-
-        snd="aplay "+"assets/good.wav"
-        os.system(snd)
+        mixer.init()
+        mixer.music.load("assets/good2.mp3")
+        mixer.music.play()
         
         
         self.t = QtCore.QTimer()
@@ -78,7 +80,10 @@ class controller:
             i.set_time(i.get_time() + 1)
             print "Time " + str(i.get_time()) + " Interval " + str(i.get_interval())
             if i.get_time() > i.get_interval() and i.get_interval() > -1:
+                preCondition=i.get_is_found()
                 i.set_is_found(i.isFound())
+                if i.get_is_found()==False and preCondition==True:
+                    mixer.music.play()
                 i.set_time(0)
         pass
     
@@ -88,6 +93,9 @@ class controller:
         for i in self.entityes:
             
             self.addToTable(i.get_is_found(), i.get_header(), tab)
+            if i.get_is_found()==False and i.isRing==False:
+                
+                i.isRing=True
             print "Header !! " + i.get_header()
         pass
     
@@ -193,7 +201,7 @@ class controller:
         lb2 = QLabel()
         # lb2.setAlignment(QtCore.Qt.AlignCenter)
        
-        lb2.setText(header)
+        lb2.setText(header.decode("cp1251"))
         
         lb3 = QLabel()
         lb3.setAlignment(QtCore.Qt.AlignCenter)
@@ -205,6 +213,7 @@ class controller:
             lb4.setPixmap(self.picGood)
         else:
             lb4.setPixmap(self.picBad)
+            
         
        
         # tab.setItem(0, 0, item1)
